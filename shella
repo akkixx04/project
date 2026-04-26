@@ -1,0 +1,47 @@
+void sort(int* а, int n)
+{
+	int temp;
+	int j, incr = n / 2;
+	while (incr > 0)
+	{
+		for (int i = incr; i < n; i++)
+		{
+			j = i - incr;
+			while (j >= 0)
+				if (a[j] > a[j + incr])
+				{
+					temp = a[j];
+					a[j] = a[j + incr];
+					a[j + incr] = temp;
+					j = j - incr;
+				}
+				else j = -1;
+		}
+		incr = incr / 2;
+	}
+}
+двумерный массив по столбцам
+void sort(int** a, int n)
+{
+    for (int j = 0; j < n; j++)
+    {
+        int incr = n / 2;
+        while (incr > 0)
+        {
+            for (int i = incr; i < n; i++)
+            {
+                int k = i - incr;
+                while (k >= 0)
+                    if (a[k][j] > a[k + incr][j])
+                    {
+                        int temp = a[k][j];
+                        a[k][j] = a[k + incr][j];
+                        a[k + incr][j] = temp;
+                        k -= incr;
+                    }
+                    else k = -1;
+            }
+            incr /= 2;
+        }
+    }
+}
