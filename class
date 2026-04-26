@@ -1,0 +1,154 @@
+#include <iostream>
+#include <string>
+#include <locale>
+using namespace std;
+class Figure
+{
+	string name;
+	string color;
+public:
+	Figure(string n, string c) : name(n), color(c)
+	{
+		cout << "Фигура " << name << " цвета " << color << " создана" << endl;
+	}
+
+	string get_name()
+	{
+		return name;
+	}
+
+	string get_color()
+	{
+		return color;
+	}
+
+	void set_name(string n)
+	{
+		name = n;
+	}
+
+	void set_color(string c)
+	{
+		color = c;
+	}
+
+	virtual void print_info()
+	{
+		cout << "Название фигуры: " << name << endl;
+		cout << "Цвет фигуры: " << color << endl;
+	}
+
+	virtual double get_area() 
+	{
+		return 0.0;
+	}
+};
+
+class Square : public Figure
+{
+	double side;
+	string unit;
+public:
+	Square(string n, string c, double s, string u) : Figure(n, c), side(s), unit(u)
+	{
+		cout << "Создан квадрат с названием " << get_name() << " цвета " << get_color() << " со стороной " << side << unit << endl;
+	}
+
+	double calculate_perimetr()
+	{
+		return 4 * side;
+	}
+
+	void set_side_unit(double s, string u)
+	{
+		side = s;
+		unit = u;
+		cout << "Установлено: " << side << unit << endl;
+	}
+
+	void print_info() override
+	{
+		cout << "Название квадрата: " << get_name() << endl;
+		cout << "Цвет квадрата: " << get_color() << endl;
+		cout << "Сторона квадрата: " << side << unit << endl;
+	}
+
+	double get_area() override
+	{
+		return side * side;
+	}
+};
+
+class Triangle : public Figure
+{
+	double base;
+	double height;
+public:
+	Triangle(string n, string c, double b, double h) : Figure(n, c), base(b), height(h)
+	{
+		cout << "Создан треугольник с названием " << get_name() << " цвета " << get_color() << " с основанием " << base << " и высотой " << height << endl;
+	}
+
+	void set_base_height(double b, double h)
+	{
+		base = b;
+		height = h;
+		cout << "Установлено основание " << base << " и высота " << height << endl;
+	}
+
+	void check_type(double a, double b, double c)
+	{
+		if (a == b && b == c) {
+			cout << "Равносторонний" << endl;
+		}
+		else if (a == b || b == c || a == c) {
+			cout << "Равнобедренный" << endl;
+		}
+		else {
+			cout << "Разносторонний" << endl;
+		}
+	}
+
+	void print_info() override
+	{
+		cout << "Название треугольника: " << get_name() << endl;
+		cout << "Цвет треугольника: " << get_color() << endl;
+		cout << "Основание треугольника: " << base << endl;
+		cout << "Высота треугольника: " << height << endl;
+	}
+
+	double get_area() override
+	{
+		return 0.5 * base * height;
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	Figure* figures[2];
+	figures[0] = new Square("Квадрат1", "Синий", 4, "см");
+	figures[1] = new Triangle("Треугольник1", "Зеленый", 10.0, 4.0);
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (Square* sq = dynamic_cast<Square*>(figures[i]))
+		{
+			sq->print_info();
+			cout << "Площадь квадрата равна " << sq->get_area() << endl;
+			cout << "Периметр квадрата равен " << sq->calculate_perimetr() << endl;
+			sq->set_name("Квадрат67");
+			sq->print_info();
+		}
+		if (Triangle* tr = dynamic_cast<Triangle*>(figures[i]))
+		{
+			tr->print_info();
+			cout << "Площадь треугольника равна " << tr->get_area() << endl;
+			tr->check_type(10.0, 7.0, 8.0);
+			tr->set_name("Треугольник67");
+			tr->print_info();
+		}
+	}
+	delete figures[0];
+	delete figures[1];
+}
