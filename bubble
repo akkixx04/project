@@ -1,0 +1,52 @@
+для массива
+void sort(int* а, int n)
+{
+	int temp;
+	for (int i = 0; i < n - 1; i++)
+		for (int j = n - 1; j > i; j--)
+			if (a[j] < a[j - 1])
+			{
+				temp = a[j];
+				a[j] = a[j - 1];
+				a[j - 1] = temp;
+			}
+}
+для двумерного массива
+по столбцам 
+void sort(int** a, int n)
+{
+    for (int j = 0; j < n; j++)
+    {
+        for (int i = 0; i < n - 1; i++)
+        {
+            for (int k = n - 1; k > i; k--)
+            {
+                if (a[k][j] > a[k - 1][j])
+                {
+                    int temp = a[k][j];
+                    a[k][j] = a[k - 1][j];
+                    a[k - 1][j] = temp;
+                }
+            }
+        }
+    }
+}
+по строкам
+void sort(int** a, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n - 1; j++)
+        {
+            for (int k = n - 1; k > j; k--)
+            {
+                if (a[i][k] > a[i][k - 1])
+                {
+                    int temp = a[i][k];
+                    a[i][k] = a[i][k - 1];
+                    a[i][k - 1] = temp;
+                }
+            }
+        }
+    }
+}
