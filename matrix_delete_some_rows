@@ -1,0 +1,85 @@
+#include <iostream>
+#include <locale>
+
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+
+    int m, n;
+    cout << "Введите количество строк и столбцов: ";
+    cin >> m >> n;
+
+    // 1. Выделение памяти и ввод исходной матрицы
+    int** matrix = new int*[m];
+    for (int i = 0; i < m; ++i) matrix[i] = new int[n];
+
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << "matrix[" << i << "][" << j << "] = ";
+            cin >> matrix[i][j];
+        }
+    }
+
+    // Ввод лимита
+    int limit;
+    cout << "Введите предельное значение суммы: ";
+    cin >> limit;
+
+    // 2. Анализ строк (создаем массив флагов)
+    bool* good_rows = new bool[m];
+    int count = 0; // Счетчик строк, которые останутся
+
+    for (int i = 0; i < m; i++) {
+        int sum = 0;
+        for (int j = 0; j < n; j++) {
+            sum += matrix[i][j];
+        }
+
+        // Если сумма БОЛЬШЕ лимита, строка "хорошая" (её оставляем)
+        if (sum > limit) {
+            good_rows[i] = true;
+            count++;
+        } else {
+            good_rows[i] = false;
+        }
+    }
+
+    // 3. Создание новой матрицы нужного размера
+    int** new_matrix = new int*[count];
+    for (int i = 0; i < count; i++) {
+        new_matrix[i] = new int[n];
+    }
+
+    // 4. Заполнение новой матрицы только "хорошими" строками
+    int k = 0; // Индекс для новой матрицы
+    for (int i = 0; i < m; i++) {
+        if (good_rows[i]) { // Если флаг стоит в true
+            for (int j = 0; j < n; j++) {
+                new_matrix[k][j] = matrix[i][j];
+            }
+            k++; // Переходим к следующей строке в новой матрице
+        }
+    }
+
+    // 5. Вывод результата
+    cout << "\nИзмененная матрица (сумма строк > " << limit << "):" << endl;
+    for (int i = 0; i < count; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << new_matrix[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+    // 6. Очистка памяти
+    for (int i = 0; i < m; ++i) delete[] matrix[i];
+    delete[] matrix;
+    
+    for (int i = 0; i < count; ++i) delete[] new_matrix[i];
+    delete[] new_matrix;
+    
+    delete[] good_rows; // Не забываем удалить массив флагов
+
+    return 0;
+}
