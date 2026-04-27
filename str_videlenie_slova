@@ -1,0 +1,8 @@
+for (int i = 0; i < text.length();)
+    {
+        while (i < text.length() && (text[i] == ' ' || ispunct(text[i]))) i++;
+        int start = i;
+        while (i < text.length() && text[i] != ' ' && !ispunct(text[i])) i++;
+        int end = i;
+        string word = text.substr(start, end - start);
+      }
