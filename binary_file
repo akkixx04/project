@@ -1,0 +1,33 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <locale>
+using namespace std;
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int n;
+    cout << "Введите количество чисел n: ";
+    cin >> n;
+    ofstream out("data.bin", ios::binary);
+    int vvod_n;
+    cout << "Введите n чисел: ";
+    for(int i = 0; i < n; i++)
+    {
+        cin >> vvod_n;
+        out.write((char*)&vvod_n, sizeof(int));
+    }
+    cout << "Введите границы интервала: ";
+    int a, b;
+    cin >> a >> b;
+    out.close();
+    ifstream in("data.bin", ios::binary);
+    int num, i = 1;
+    cout << "Результат: " << endl;
+    while(in.read((char*)&num, sizeof(int)))
+    {
+        if(num >= a && num <= b) cout << num << endl;
+        i++;
+    }
+    in.close();
+}
