@@ -1,0 +1,74 @@
+#include <iostream>
+#include <locale>
+using namespace std;
+int main()
+{
+	int n;
+	cin >> n;
+	int** matrix = new int* [n];
+	for (int i = 0; i < n; i++) matrix[i] = new int[n];
+	for (int i = 0; i < n;i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cin >> matrix[i][j];
+		}
+	}
+	for (int i = 0; i < n;i++, cout << endl)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << matrix[i][j] << "\t";
+		}
+	}
+	bool* good_rows = new bool[n];
+	int count = 0;
+	for (int i = 0; i < n;i++)
+	{
+		bool chet = false;
+		for (int j = 0; j < n; j++)
+		{
+			if (matrix[i][j] % 2 == 0)
+			{
+				chet = true;
+				break;
+			}
+		}
+		if (!chet)
+		{
+			good_rows[i] = true;
+			count++;
+		}
+	}
+	int new_n = n + count;
+	int** new_matrix = new int* [new_n];
+	for (int i = 0;i < new_n;i++) new_matrix[i] = new int[n];
+
+	for (int j = 0; j < n; j++)
+	{
+		int new_i = 0;
+		for (int i = 0; i < n; i++)
+		{
+			new_matrix[new_i++][j] = matrix[i][j];
+			if (good_rows[i] == true)
+
+			{
+				new_matrix[new_i++][j] = 0;
+			}
+		}
+	}
+
+	for (int i = 0; i < new_n;i++, cout << endl)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			cout << new_matrix[i][j] << "\t";
+		}
+	}
+
+	for (int i = 0; i < n;i++) delete[] matrix[i];
+	delete[] matrix;
+	for (int i = 0; i < new_n;i++) delete[] new_matrix[i];
+	delete[] new_matrix;
+      delete[] good_rows;
+}
