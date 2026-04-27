@@ -1,0 +1,35 @@
+#include <iostream>
+#include <locale>
+#include <string>
+#include <windows.h>
+using namespace std;
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
+    string text;
+    cout << "Введите тектовое сообщение: ";
+    getline(cin, text);
+    int count = 0;
+    for (int i = 0; i < text.length(); i++) 
+        if (ispunct(text[i])) text[i] = ' ';
+    for( int i = 0; i < text.length();)
+    {
+        while (i < text.length() && text[i] == ' ') i++;
+        int start = i;
+        while (i < text.length() && text[i] != ' ') i++;
+        int end = i;
+        string word = text.substr(start, end - start);
+        bool found = true;
+        for(int i = 0, j = word.length() - 1; i < j; i++, j--)
+        {
+            if (tolower(word[i]) != tolower(word[j]))
+            {
+                found = false;
+                break;
+            }
+        }
+        if(found && word.length() > 1) cout << word << endl;
+    }
+}
