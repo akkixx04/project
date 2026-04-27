@@ -1,0 +1,24 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
+int main()
+{
+    fstream in1("input.txt");
+    fstream in2("input.txt");
+    ofstream out("output.txt");
+    int n;
+    while (!in1.eof())
+    {
+        in1 >> n;
+        if (n < 0) out << n << endl;
+    }
+    while (!in2.eof())
+    {
+        in2 >> n;
+        if (n >= 0) out << n << endl;
+    }
+    in1.close();
+    in2.close();
+    out.close();
+}
