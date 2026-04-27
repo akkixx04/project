@@ -1,0 +1,46 @@
+#include <iostream>
+#include <locale>
+using namespace std;
+bool all_diferent(int num) {
+    if (num < 0) num = -num;
+
+    int digits[10] = { 0 };
+
+    while (num > 0) {
+        int d = num % 10;
+        digits[d]++;
+        if (digits[d] > 1) {
+            return false;
+        }
+        num /= 10;
+    }
+    return true;
+}
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int n;
+    cin >> n;
+    int* arr = new int[n];
+    for(int i = 0; i < n; i++)
+    {
+        cout << "arr[" << i << "] = ";
+        cin >> *(arr + i);
+    }
+
+    int new_size = 0;
+    for (int i = 0; i < n; i++) {
+        if (!all_diferent(arr[i])) {
+            arr[new_size] = arr[i];
+            new_size++;
+        }
+    }
+
+    cout << "Измененный массив: ";
+    for (int i = 0; i < new_size; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+
+    delete[] arr;
+}
