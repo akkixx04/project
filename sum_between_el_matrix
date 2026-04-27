@@ -1,0 +1,41 @@
+#include <iostream>
+#include <locale>
+using namespace std;
+void main()
+{
+    setlocale(LC_ALL, "Russian");
+    int z[3][2] = {5, 4, 2, 5, 2, 4};
+    int max_x = 0, max_y = 0, min_x = 0, min_y = 0, sum = 0;
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 2; ++j)
+            if (z[i][j] <= z[min_x][min_y]) 
+            {
+                min_x = i;
+                min_y = j;
+            }
+
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 2; ++j)
+            if (z[i][j] > z[max_x][max_y]) 
+            {
+                max_x = i;
+                max_y = j;
+            }
+
+    int pos_max = max_x * 2 + max_y;
+    int pos_min = min_x * 2 + min_y;
+
+    if (pos_max > pos_min) 
+        cout << "Максимальный элемент встречается позже минимального";
+    else 
+    {
+        for (int k = pos_max + 1; k < pos_min; ++k) 
+        {
+            int i = k / 2; // восстанавливаем номер строки
+            int j = k % 2; // восстанавливаем номер столбца
+            sum += z[i][j];
+        }
+        cout << sum << endl;
+    }
+}
