@@ -1,0 +1,56 @@
+#include <iostream>
+#include <locale>
+using namespace std;
+
+void sort(int** a, int n)
+{
+    for (int j = 0; j < n; j++) 
+    {
+        
+        for (int step = n / 2; step > 0; step /= 2) 
+        {
+            for (int i = step; i < n; i++) 
+            {
+                int temp = a[i][j];
+                for (int k = i; k >= step && a[k - step][j] > temp; k -= step) 
+                {
+                    a[k][j] = a[k - step][j];
+                }
+                a[k][j] = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int n;
+    cin >> n;
+    int **z = new int *[n];
+    for(int i = 0; i < n; ++i) z[i] = new int [n];
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = ";
+            cin >> *(*(z+i)+j);
+        }
+    cout << "Исходная матрица: " << endl;
+    for (int i = 0; i < n; ++i, cout << endl)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = " << *(*(z+i)+j) << "\t";
+        }
+
+    sort(z, n);
+
+    cout << "После сотрировки: " << endl;
+    for (int i = 0; i < n; ++i, cout << endl)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = " << *(*(z+i)+j) << "\t";
+        }
+
+    for(int i = 0; i < n; ++i) delete [] z[i];
+    delete [] z;
+}
