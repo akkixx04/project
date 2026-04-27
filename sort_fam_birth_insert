@@ -1,0 +1,85 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <locale>
+using namespace std;
+
+struct mas {
+    string surname;
+    string name;
+    string patronymic;
+    int birth;
+    int grades[5];
+};
+
+void sort(mas* a, int n)
+{
+    for (int i = 1; i < n; i++) 
+    {
+        mas temp = a[i];
+        int j = i - 1;
+        while (j >= 0) 
+        {
+            bool swap = false;
+            if (a[j].surname > temp.surname) 
+            {
+                swap = true;
+            }
+            else if (a[j].surname == temp.surname) 
+            {
+                if (a[j].birth < temp.birth) 
+                {
+                    swap = true;
+                }
+            }
+            if (swap) 
+            {
+                a[j + 1] = a[j];
+                j--;
+            } 
+            else 
+            {
+                break;
+            }
+        }
+        a[j + 1] = temp;
+    }
+}
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    ifstream in("input.txt");
+    ofstream out("output.txt");
+
+    int group;
+    in >> group;
+
+    mas students[100];
+    int n = 0;
+
+    while(in >> students[n].surname >> students[n].name >> students[n].patronymic >> students[n].birth)
+    {
+        for (int i = 0; i < 5; i++) {
+            int grade;
+            in >> grade;
+            students[n].grades[i] = grade;
+        }
+        n++;
+    }
+
+    sort(students, n);
+
+    out << group << endl;
+    for (int i = 0; i < n; i++, out << endl) 
+    {
+    out << students[i].surname << " " << students[i].name << " " << students[i].patronymic << " " << students[i].birth << " ";
+    for (int k = 0; k < 5; k++) 
+    {
+        out << students[i].grades[k] << " ";
+    }
+}
+
+    in.close();
+    out.close();
+}
