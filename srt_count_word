@@ -1,0 +1,27 @@
+. Подсчитать, сколько раз заданное слово встречается в сообщении (при этом заданное слово не может являться частью другого слова).
+#include <iostream>
+#include <locale>
+#include <string>
+#include <windows.h>
+using namespace std;
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    setlocale(LC_ALL, "Russian");
+    string text, word;
+    cout << "Введите тектовое сообщение: ";
+    getline(cin, text);
+    cout << "Введите слово для поиска: ";
+    getline(cin, word);
+    int count = 0;
+    for (int i = 0; i < text.length();)
+    {
+        while (i < text.length() && (text[i] == ' ' || ispunct(text[i]))) i++;
+        int start = i;
+        while (i < text.length() && text[i] != ' ' && !ispunct(text[i])) i++;
+        int end = i;
+        if (text.substr(start, end - start) == word) count++;
+    }
+    cout << "Количество вхождений: " << count;
+}
