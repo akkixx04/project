@@ -1,0 +1,95 @@
+#include <iostream>
+#include <locale>
+
+using namespace std;
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+
+    int m, n;
+    cout << "Введите количество строк и столбцов: ";
+    cin >> m >> n;
+
+    // 1. Выделение памяти и ввод исходной матрицы
+    int** matrix = new int*[m];
+    for (int i = 0; i < m; ++i) matrix[i] = new int[n];
+
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cout << "matrix[" << i << "][" << j << "] = ";
+            cin >> matrix[i][j];
+        }
+    }
+
+    // 2. Создаем массивы флагов для строк и столбцов
+    bool* good_rows = new bool[m];
+    bool* good_cols = new bool[n];
+
+    // Анализируем строки (строка "хорошая", если в ней есть хоть один не ноль)
+    int new_m = 0;
+    for (int i = 0; i < m; i++) {
+        bool all_zero = true;
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != 0) {
+                all_zero = false;
+                break;
+            }
+        }
+        good_rows[i] = !all_zero; // true, если строка НЕ нулевая
+        if (good_rows[i]) new_m++;
+    }
+
+    // Анализируем столбцы
+    int new_n = 0;
+    for (int j = 0; j < n; j++) {
+        bool all_zero = true;
+        for (int i = 0; i < m; i++) {
+            if (matrix[i][j] != 0) {
+                all_zero = false;
+                break;
+            }
+        }
+        good_cols[j] = !all_zero; // true, если столбец НЕ нулевой
+        if (good_cols[j]) new_n++;
+    }
+
+    // 3. Создаем новую матрицу уменьшенного размера
+    int** new_matrix = new int*[new_m];
+    for (int i = 0; i < new_m; i++) {
+        new_matrix[i] = new int[new_n];
+    }
+
+    // 4. Заполнение новой матрицы
+    int ni = 0; // Индекс для новой строки
+    for (int i = 0; i < m; i++) {
+        if (!good_rows[i]) continue; // Пропускаем нулевую строку
+
+        int nj = 0; // Сбрасываем индекс нового столбца для каждой строки
+        for (int j = 0; j < n; j++) {
+            if (!good_cols[j]) continue; // Пропускаем нулевой столбец
+
+            new_matrix[ni][nj] = matrix[i][j];
+            nj++;
+        }
+        ni++;
+    }
+
+    // 5. Вывод результата
+    cout << "\nИзмененная матрица (без нулевых строк и столбцов):" << endl;
+    for (int i = 0; i < new_m; ++i) {
+        for (int j = 0; j < new_n; ++j) {
+            cout << new_matrix[i][j] << "\t";
+        }
+        cout << endl;
+    }
+
+    // 6. Очистка памяти
+    for (int i = 0; i < m; ++i) delete[] matrix[i];
+    delete[] matrix;
+    for (int i = 0; i < new_m; ++i) delete[] new_matrix[i];
+    delete[] new_matrix;
+    delete[] good_rows;
+    delete[] good_cols;
+
+    return 0;
+}
