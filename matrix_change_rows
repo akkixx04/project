@@ -1,0 +1,52 @@
+#include <iostream>
+#include <locale>
+using namespace std;
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int n;
+    cin >> n;
+    int **z = new int *[n];
+    for(int i = 0; i < n; ++i) z[i] = new int [n];
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = ";
+            cin >> *(*(z+i)+j);
+        }
+    cout << "ДО" << endl;
+    for (int i = 0; i < n; ++i, cout << endl)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = " << *(*(z+i)+j) << "\t";
+        }
+
+    if(n % 2 == 0)
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            int el = z[n/2-1][j];
+            z[n/2-1][j] = z[n/2][j];
+            z[n/2][j] = el;
+        }
+    }
+    else 
+    {
+        for (int j = 0; j < n; ++j)
+        {
+            int el = z[0][j];
+            z[0][j] = z[n/2][j];
+            z[n/2][j] = el;
+        }
+    }
+
+    cout << "ПОСЛЕ" << endl;
+    for (int i = 0; i < n; ++i, cout << endl)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = " << *(*(z+i)+j) << "\t";
+        }
+
+    for(int i = 0; i < n; ++i) delete [] z[i];
+    delete [] z;
+}
