@@ -1,0 +1,77 @@
+#include <iostream>
+#include <locale>
+using namespace std;
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int m, n;
+    cin >> m >> n;
+    int **z = new int *[m];
+    for(int i = 0; i < m; ++i) z[i] = new int [n];
+    for (int i = 0; i < m; ++i)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = ";
+            cin >> *(*(z+i)+j);
+        }
+    cout << "ДО" << endl;
+    for (int i = 0; i < m; ++i, cout << endl)
+        for (int j = 0; j < n; ++j)
+        {
+            cout << "z[" << i << "][" << j << "] = " << *(*(z+i)+j) << "\t";
+        }
+
+    int n_col = -1;
+    for (int j = 0; j < n; ++j)
+    {
+        int count = 0;
+        for (int i = 0; i < m; ++i)
+        {
+            if (z[i][j] > 0) count++;
+        }
+        if (count == m)
+        {
+            n_col = j;
+            break;
+        }
+    }
+
+    if (n_col != -1)
+    {
+        int **new_z = new int *[m];
+        for(int i = 0; i < m; ++i) new_z[i] = new int [n-1];
+
+        for(int i = 0; i < m; ++i)
+        {
+            int new_j = 0;
+            for(int j = 0; j < n; ++j)
+            {
+                if(j != n_col)
+                {
+                    new_z[i][new_j] = z[i][j];
+                    new_j++;
+                }
+            }
+        }
+        cout << "СТОЛБЕЦ УДАЛЕН" << endl;
+        for (int i = 0; i < m; ++i, cout << endl)
+            for (int j = 0; j < n-1; ++j)
+            {
+                cout << "new_z[" << i << "][" << j << "] = " << *(*(new_z+i)+j) << "\t";
+            }
+        for(int i = 0; i < m; ++i) delete [] new_z[i];
+        delete [] new_z;
+    }
+    else
+    {
+        cout << "БЕЗ ИЗМЕНЕНИЙ" << endl;
+        for (int i = 0; i < m; ++i, cout << endl)
+            for (int j = 0; j < n; ++j)
+            {
+                cout << "z[" << i << "][" << j << "] = " << *(*(z+i)+j) << "\t";
+            }
+    }
+
+    for(int i = 0; i < m; ++i) delete [] z[i];
+    delete [] z;
+}
